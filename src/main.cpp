@@ -54,6 +54,15 @@ int main(int argc, char* argv[]) {
     unsigned int buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    /*
+     * Need to tell the OpenGL buffer what the data is about (What the layout of our data is)
+     * in this context it is a triangle. We do this exactly
+     * after the buffer has been bound.
+     *
+     * stride attr: This is the amount of bytes between each vertex.
+     * The amount that we need to go forward to reach the next vertex.
+     * */
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, (const void*) 0);
     glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
 
     /* Loop until the user closes the window */
