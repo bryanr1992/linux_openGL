@@ -63,6 +63,7 @@ int main(int argc, char* argv[]) {
      * The amount that we need to go forward to reach the next vertex.
      * */
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, (const void*) 0);
+    glEnableVertexAttribArray(0); //use the index for our vertex array that we want to enable
     glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
 
     /* Loop until the user closes the window */
