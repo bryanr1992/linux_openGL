@@ -9,6 +9,37 @@ static void glfwErrorCallback(int error, const char* description){
   std::cerr << "GLFW error " << error << ": " << description << std::endl;
 }
 
+static int compileShader(unsigned int type, std::string& source){
+    unsigned int id = glCreateShader(type);
+    const char* src = source.c_str();
+
+    glShaderSource(id, 1, &src, nullptr);
+    glCompileShader(id);
+
+    //TODO:: Error handle
+    
+
+    return id;
+}
+
+static int CreateShader(std::string& vertexShader, std::string& fragmentShader){
+    unsigned int program = glCreateProgram();
+    unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader);
+    unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
+
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+
+    glLinkProgram(program);
+    glValidateProgram(program);
+
+    glDeleteShader(vs);//delete shader since they are stored inside the program
+    glDeleteShader(fs); 
+
+
+    return program;
+}
+
 int main(int argc, char* argv[]) {
     /*spin up seperate terminal to emulate vs behavior*/
     if(argc == 1){
