@@ -16,8 +16,22 @@ static int compileShader(unsigned int type, std::string& source){
     glShaderSource(id, 1, &src, nullptr);
     glCompileShader(id);
 
-    //TODO:: Error handle
-    
+    int result;
+    glGetShaderiv(id, GL_COMPILE_STATUS, &result); 
+
+    if (result == GL_FALSE){
+        int length;
+        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+
+        //char message[length];
+        char* message = (char*)alloca(length * sizeof(char));//We want to allocate on the stack and we cannot do it the normal Wway
+        glGetShaderInfoLog(id, length, &length, message);
+        std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex": "fragment") << " shader!" << std::endl;
+        std::cout << message << std::endl;
+
+        glDeleteShader(id);
+        return 0;
+    }
 
     return id;
 }
